@@ -5,7 +5,7 @@ import { useApp } from '../../context/AppContext';
 
 const ServiceSelection: React.FC = () => {
   const navigate = useNavigate();
-  const { user, setUser, setSelectedServiceType } = useApp();
+  const { setSelectedServiceType } = useApp();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
   const services = [
@@ -74,33 +74,48 @@ const ServiceSelection: React.FC = () => {
   const handleContinue = () => {
     if (selectedServices.length === 0) return;
 
-    const updatedUser = {
-      ...user!,
-      services: selectedServices.map(id => ({
-        id: id as any,
-        name: services.find(s => s.id === id)?.name || '',
-        active: false,
-      }))
-    };
     setSelectedServiceType(selectedServices);
-    setUser(updatedUser);
     navigate('/onboarding/register');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="max-w-5xl w-full">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
+      <div className="max-w-6xl w-full">
+        {/* Step Indicator */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center space-x-4">
+            {/* Step 1 - Active */}
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-purple-500 text-white rounded-full flex items-center justify-center font-semibold shadow-lg">
+                1
+              </div>
+              <span className="ml-2 text-purple-600 font-medium">Choose Services</span>
+            </div>
+
+            {/* Connector */}
+            <div className="w-16 h-0.5 bg-gray-300"></div>
+
+            {/* Step 2 - Inactive */}
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-gray-300 text-gray-500 rounded-full flex items-center justify-center font-semibold">
+                2
+              </div>
+              <span className="ml-2 text-gray-500 font-medium">Account Setup</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">
             Choose Your Marketing Services
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Select the services that best fit your restaurant's growth goals.
             You can always add or modify services later.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {services.map((service) => {
             const isSelected = selectedServices.includes(service.id);
             const Icon = service.icon;
@@ -109,33 +124,33 @@ const ServiceSelection: React.FC = () => {
               <div
                 key={service.id}
                 onClick={() => toggleService(service.id)}
-                className={`relative bg-white rounded-2xl p-8 cursor-pointer transition-all duration-300 transform hover:scale-105 ${isSelected
-                  ? 'ring-2 ring-orange-500 shadow-xl'
+                className={`relative bg-white rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-105 ${isSelected
+                  ? 'ring-2 ring-purple-500 shadow-xl'
                   : 'shadow-lg hover:shadow-xl'
                   }`}
               >
                 {isSelected && (
-                  <div className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full p-2">
-                    <Check className="w-4 h-4" />
+                  <div className="absolute -top-2 -right-2 bg-purple-500 text-white rounded-full p-1.5">
+                    <Check className="w-3 h-3" />
                   </div>
                 )}
 
-                <div className="flex items-center justify-center w-16 h-16 bg-orange-100 rounded-2xl mb-6">
-                  <Icon className="w-8 h-8 text-orange-600" />
+                <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-xl mb-4">
+                  <Icon className="w-6 h-6 text-purple-600" />
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
                   {service.name}
                 </h3>
-                <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
-                <p className="text-lg font-bold text-orange-600 mb-6">
+                <p className="text-gray-600 mb-3 text-sm">{service.description}</p>
+                <p className="text-base font-bold text-purple-600 mb-4">
                   {service.price}
                 </p>
 
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {service.features.map((feature, index) => (
-                    <li key={index} className="flex items-center text-gray-700 text-sm">
-                      <Check className="w-3 h-3 text-green-500 mr-2 flex-shrink-0" />
+                    <li key={index} className="flex items-start text-gray-700 text-xs">
+                      <Check className="w-3 h-3 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
                       {feature}
                     </li>
                   ))}
@@ -149,8 +164,8 @@ const ServiceSelection: React.FC = () => {
           <button
             onClick={handleContinue}
             disabled={selectedServices.length === 0}
-            className={`px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-200 ${selectedServices.length > 0
-              ? 'bg-orange-600 text-white hover:bg-orange-700 shadow-lg hover:shadow-xl'
+            className={`px-10 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${selectedServices.length > 0
+              ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-lg hover:shadow-xl'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
           >
