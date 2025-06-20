@@ -43,9 +43,7 @@ export default function RegistrationPage() {
         const { name, value } = e.target;
         setFormData((prev: FormDataType) => ({
             ...prev,
-            [name]: value,
-            // Update service_types when business_type changes
-            ...(name === 'business_type' && { service_types: [value] })
+            [name]: value
         }));
     };
 
@@ -354,11 +352,29 @@ export default function RegistrationPage() {
                                     required
                                     className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50"
                                 >
-                                    <option value="restaurant">Restaurant</option>
-                                    <option value="cafe">Cafe</option>
-                                    <option value="bar">Bar</option>
-                                    <option value="food_truck">Food Truck</option>
-                                    <option value="catering">Catering</option>
+                                    <option value="restaurant">Food & Beverage</option>
+                                    <option value="retail_ecommerce">Retail & E-commerce</option>
+                                    <option value="health_wellness">Health & Wellness</option>
+                                    <option value="beauty_personal_care">Beauty & Personal Care</option>
+                                    <option value="hospitality_travel">Hospitality & Travel</option>
+                                    <option value="education_training">Education & Training</option>
+                                    <option value="finance_insurance">Finance & Insurance</option>
+                                    <option value="real_estate">Real Estate & Property</option>
+                                    <option value="automotive">Automotive & Transportation</option>
+                                    <option value="construction_engineering">Construction & Engineering</option>
+                                    <option value="logistics_supply_chain">Logistics & Supply Chain</option>
+                                    <option value="fashion_apparel">Fashion & Apparel</option>
+                                    <option value="creative_media">Creative & Media</option>
+                                    <option value="professional_services">Professional Services</option>
+                                    <option value="technology">Technology & SaaS</option>
+                                    <option value="agriculture">Agriculture & Agro-processing</option>
+                                    <option value="events_entertainment">Events & Entertainment</option>
+                                    <option value="legal_law_firm">Legal & Law</option>
+                                    <option value="non_profit">Non-profits & NGOs</option>
+                                    <option value="home_services">Home & Local Services</option>
+                                    <option value="telecom_internet">Telecom & Internet</option>
+                                    <option value="energy_utilities">Energy & Utilities</option>
+
                                 </select>
                             </div>
 

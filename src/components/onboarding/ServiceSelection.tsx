@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, QrCode, MapPin, MessageSquare, Check } from 'lucide-react';
-import { useApp } from '../../context/AppContext';
+import { AppContext, useApp } from '../../context/AppContext';
 
 const ServiceSelection: React.FC = () => {
   const navigate = useNavigate();
-  const { setSelectedServiceType } = useApp();
+  const { setSelectedServiceType } = useContext(AppContext);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
 
   const services = [
@@ -75,6 +75,7 @@ const ServiceSelection: React.FC = () => {
     if (selectedServices.length === 0) return;
 
     setSelectedServiceType(selectedServices);
+    console.log('Selected Services:', selectedServices);
     navigate('/onboarding/register');
   };
 
@@ -124,8 +125,8 @@ const ServiceSelection: React.FC = () => {
               <div
                 key={service.id}
                 onClick={() => toggleService(service.id)}
-                className={`relative bg-white rounded-xl p-6 cursor-pointer transition-all duration-300 transform hover:scale-105 ${isSelected
-                  ? 'ring-2 ring-purple-500 shadow-xl'
+                className={`relative bg-white rounded-2xl p-8 cursor-pointer transition-all duration-300 transform hover:scale-105 ${isSelected
+                  ? 'ring-2 ring-orange-500 shadow-xl'
                   : 'shadow-lg hover:shadow-xl'
                   }`}
               >
@@ -164,8 +165,8 @@ const ServiceSelection: React.FC = () => {
           <button
             onClick={handleContinue}
             disabled={selectedServices.length === 0}
-            className={`px-10 py-3 rounded-xl text-base font-semibold transition-all duration-200 ${selectedServices.length > 0
-              ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-lg hover:shadow-xl'
+            className={`px-12 py-4 rounded-xl text-lg font-semibold transition-all duration-200 ${selectedServices.length > 0
+              ? 'bg-orange-600 text-white hover:bg-orange-700 shadow-lg hover:shadow-xl'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
               }`}
           >
