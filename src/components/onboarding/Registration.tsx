@@ -99,8 +99,7 @@ export default function RegistrationPage() {
             const response: Response = await fetch("https://mktmem-backend.onrender.com/api/users/register/", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
             });
@@ -122,7 +121,7 @@ export default function RegistrationPage() {
 
             console.log('Registration successful:');
             // Handle successful registration (e.g., redirect to login or dashboard)
-            alert('Registration successful! Please check your email to verify your account.');
+            alert('Registration successful!');
             navigate('/onboarding/login');
             setFormData({
                 username: '',

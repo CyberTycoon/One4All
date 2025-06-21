@@ -199,7 +199,7 @@ const PresenceMarketing: React.FC = () => {
                   <button
                     className={`px-4 py-2 rounded-lg font-medium transition-colors flex-shrink-0 w-full sm:w-auto ${data.connected
                       ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                      : 'bg-orange-600 text-white hover:bg-orange-700'
+                      : 'bg-purple-600 text-white hover:bg-purple-700'
                       }`}
                   >
                     {data.connected ? 'Disconnect' : 'Connect'}
@@ -222,7 +222,7 @@ const PresenceMarketing: React.FC = () => {
           <div className="flex justify-end mt-6">
             <button
               onClick={() => setShowSocialConnections(false)}
-              className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               Done
             </button>
@@ -259,7 +259,7 @@ const PresenceMarketing: React.FC = () => {
                 key={type}
                 onClick={() => setPostType(type as any)}
                 className={`flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 px-2 sm:px-4 py-3 rounded-lg border-2 transition-colors ${postType === type
-                  ? 'border-orange-500 bg-orange-50 text-orange-700'
+                  ? 'border-purple-500 bg-purple-50 text-purple-700'
                   : 'border-gray-300 hover:border-gray-400'
                   }`}
               >
@@ -297,12 +297,12 @@ const PresenceMarketing: React.FC = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Caption</label>
               <textarea
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 rows={3}
                 placeholder="Write your post caption..."
               />
               <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-2 space-y-2 sm:space-y-0">
-                <button className="flex items-center space-x-2 text-orange-600 text-sm hover:text-orange-700">
+                <button className="flex items-center space-x-2 text-purple-600 text-sm hover:text-purple-700">
                   <Sparkles className="w-4 h-4" />
                   <span>Generate with AI</span>
                 </button>
@@ -315,14 +315,14 @@ const PresenceMarketing: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Schedule Date</label>
                 <input
                   type="date"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Schedule Time</label>
                 <input
                   type="time"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                 />
               </div>
             </div>
@@ -345,7 +345,7 @@ const PresenceMarketing: React.FC = () => {
 
                     return (
                       <label key={platform} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                        <input type="checkbox" className="rounded text-orange-600 flex-shrink-0" />
+                        <input type="checkbox" className="rounded text-purple-600 flex-shrink-0" />
                         <span className="text-sm font-medium truncate">
                           {platformNames[platform as keyof typeof platformNames]}
                         </span>
@@ -369,7 +369,7 @@ const PresenceMarketing: React.FC = () => {
               </button>
               <button
                 onClick={() => setShowCreatePost(false)}
-                className="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
                 Schedule Post
               </button>
@@ -417,7 +417,7 @@ const PresenceMarketing: React.FC = () => {
           </button>
           <button
             onClick={() => setShowCreatePost(true)}
-            className="flex items-center justify-center space-x-2 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm"
+            className="flex items-center justify-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Create Post</span>
@@ -428,7 +428,7 @@ const PresenceMarketing: React.FC = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
-          { label: 'Posts This Month', value: '12', icon: Calendar, color: 'orange' },
+          { label: 'Posts This Month', value: '12', icon: Calendar, color: 'purple' },
           { label: 'Scheduled Posts', value: '8', icon: Clock, color: 'blue' },
           { label: 'Total Reach', value: '2.4K', icon: Users, color: 'green' },
           { label: 'Engagement Rate', value: '4.2%', icon: TrendingUp, color: 'purple' }
@@ -437,11 +437,11 @@ const PresenceMarketing: React.FC = () => {
           return (
             <div key={index} className="bg-white rounded-xl p-3 sm:p-4 lg:p-6 shadow-sm border border-gray-200">
               <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${stat.color === 'orange' ? 'bg-orange-100' :
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${stat.color === 'purple' ? 'bg-purple-100' :
                   stat.color === 'blue' ? 'bg-blue-100' :
                     stat.color === 'green' ? 'bg-green-100' : 'bg-purple-100'
                   }`}>
-                  <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color === 'orange' ? 'text-orange-600' :
+                  <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color === 'purple' ? 'text-purple-600' :
                     stat.color === 'blue' ? 'text-blue-600' :
                       stat.color === 'green' ? 'text-green-600' : 'text-purple-600'
                     }`} />

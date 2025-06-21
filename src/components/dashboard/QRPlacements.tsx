@@ -109,7 +109,7 @@ const QRPlacements: React.FC = () => {
     { label: 'Active Placements', value: '5', icon: QrCode, color: 'blue' },
     { label: 'This Month Spend', value: '$247', icon: DollarSign, color: 'green' },
     { label: 'New Customers', value: '23', icon: Users, color: 'purple' },
-    { label: 'Conversion Rate', value: '3.2%', icon: TrendingUp, color: 'orange' }
+    { label: 'Conversion Rate', value: '3.2%', icon: TrendingUp, color: 'purple' }
   ];
 
   const getStatColors = (color: string) => {

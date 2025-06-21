@@ -11,7 +11,8 @@ import {
   Landmark,
   FeatherIcon,
   Building2,
-  ChevronRight
+  ChevronRight,
+  Trash2,
 } from 'lucide-react';
 
 
@@ -171,6 +172,7 @@ const PlatformConnections: React.FC<{ currentBrand: { name: string; brand_id: st
     loadPlatforms();
   }, [currentBrand]);
 
+
   if (isLoading) {
     return <PlatformConnectionsSkeleton />;
   }
@@ -239,7 +241,7 @@ const PlatformConnections: React.FC<{ currentBrand: { name: string; brand_id: st
                     disabled={platform.status === 'pending'}
                     className={`px-3 md:px-4 py-2 rounded-lg font-medium transition-colors text-sm ${platform.status === 'pending'
                       ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                      : 'bg-orange-600 text-white hover:bg-orange-700'
+                      : 'bg-purple-600 text-white hover:bg-purple-700'
                       }`}
                   >
                     {platform.status === 'pending' ? 'Connecting...' : 'Connect'}
@@ -349,11 +351,145 @@ const SocialConnections: React.FC = () => {
       console.log('Brand updated successfully!');
       setBrandName('');
       setBrandID('');
+      getBrands();
       return data;
 
     } catch (error) {
       console.error('Brand update error:', error);
       throw error;
+    }
+  };
+
+  // Enhanced delete brand function with better error handling
+  const deleteBrand = async (brand_id: string) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    try {
+      const response = await fetch(`https://mktmem-backend.onrender.com/api/users/brands/${brand_id}/delete/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Handle specific response statuses with detailed error messages
+      if (response.status === 404) {
+        console.warn(`Brand ${brand_id} not found - may have already been deleted`);
+        // Still return success since the goal (brand not existing) is achieved
+        return { success: true, message: 'Brand was already deleted' };
+      }
+
+      if (response.status === 403) {
+        throw new Error('You do not have permission to delete this brand.');
+      }
+
+      if (response.status === 401) {
+        throw new Error('Authentication failed. Please log in again.');
+      }
+
+      if (response.status >= 500) {
+        throw new Error('Server error occurred while deleting the brand. Please try again later.');
+      }
+
+      if (!response.ok) {
+        // Try to parse error message from response
+        let errorMessage = `Failed to delete brand: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message || errorData.error) {
+            errorMessage = errorData.message || errorData.error;
+          }
+        } catch (parseError) {
+          // If we can't parse the error response, use the default message
+        }
+        throw new Error(errorMessage);
+      }
+
+      console.log('Brand deleted successfully from backend!');
+      return { success: true, message: 'Brand deleted successfully' };
+
+    } catch (error) {
+      console.error('Brand deletion error:', error);
+      throw error;
+    }
+  };
+
+  const [deletingBrands, setDeletingBrands] = useState<Set<string>>(new Set());
+
+  // Enhanced delete handler with better UX and error handling
+  const handleDeleteBrand = async (brand: { name: string; brand_id: string }) => {
+    // Prevent deletion if already in progress
+    if (deletingBrands.has(brand.brand_id)) {
+      console.log('Brand deletion already in progress');
+      return;
+    }
+
+    // Confirmation dialog
+    if (!window.confirm(`Are you sure you want to delete the brand "${brand.name}"?\n\nThis action cannot be undone and will remove all associated data.`)) {
+      return;
+    }
+
+    // Add brand to deleting set immediately
+    setDeletingBrands(prev => new Set(prev).add(brand.brand_id));
+
+    try {
+      // Call delete API
+      const result = await deleteBrand(brand.brand_id);
+
+      // Always refresh brands list from server to ensure consistency
+      await getBrands();
+
+      // Handle current brand replacement if necessary
+      if (currentBrand?.brand_id === brand.brand_id) {
+        // Get updated brands list
+        const updatedBrands = brands.filter(b => b.brand_id !== brand.brand_id);
+
+        if (updatedBrands.length > 0) {
+          // Set the first available brand as current
+          const newCurrentBrand = updatedBrands[0];
+          setCurrentBrand(newCurrentBrand);
+          console.log(`Switched to brand: ${newCurrentBrand.name}`);
+        } else {
+          // No brands left
+          setCurrentBrand(null);
+          console.log('No brands remaining');
+        }
+      }
+
+      // Show success message
+      console.log(`Brand "${brand.name}" deleted successfully`);
+
+      // Optional: Show a toast notification instead of alert for better UX
+      // You can replace this with your preferred notification system
+      if (window.confirm(`Brand "${brand.name}" has been deleted successfully!\n\nClick OK to continue.`)) {
+        // User acknowledged the deletion
+      }
+
+    } catch (error: any) {
+      console.error('Failed to delete brand:', error);
+
+      // Refresh brands list even on error to ensure UI consistency
+      try {
+        await getBrands();
+      } catch (refreshError) {
+        console.error('Failed to refresh brands after delete error:', refreshError);
+      }
+
+      // Show user-friendly error message
+      const errorMessage = error.message || 'Failed to delete brand. Please try again.';
+      alert(`Error deleting brand: ${errorMessage}`);
+
+    } finally {
+      // Always remove brand from deleting set
+      setDeletingBrands(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(brand.brand_id);
+        return newSet;
+      });
     }
   };
 
@@ -367,11 +503,13 @@ const SocialConnections: React.FC = () => {
   const [connectedPlatforms, setConnectedPlatforms] = useState([]);
   const [totalFollowers, setTotalFollowers] = useState(0);
 
+  // Enhanced getBrands function with better error handling
   const getBrands = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('No authentication token found');
     }
+
     try {
       const response = await fetch('https://mktmem-backend.onrender.com/api/users/brands/', {
         method: 'GET',
@@ -381,14 +519,22 @@ const SocialConnections: React.FC = () => {
         },
       });
 
+      if (response.status === 401) {
+        throw new Error('Authentication failed. Please log in again.');
+      }
+
       if (!response.ok) {
         throw new Error(`Failed to fetch brands: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('Brands fetched successfully!');
-      setBrands(data.brands);
-      return data.brands;
+      console.log('Brands fetched successfully!', data);
+
+      // Ensure we have a brands array
+      const fetchedBrands = data.brands || [];
+      setBrands(fetchedBrands);
+
+      return fetchedBrands;
 
     } catch (error) {
       console.error('Error fetching brands:', error);
@@ -396,28 +542,38 @@ const SocialConnections: React.FC = () => {
     }
   };
 
+  // Enhanced initialization with better brand selection logic
   useEffect(() => {
-    const storedBrand = localStorage.getItem('currentBrand');
-
     const init = async () => {
-      try {
-        setIsLoadingBrands(true);
-        setBrandsError(null);
+      setIsLoadingBrands(true);
+      setBrandsError(null);
 
+      try {
         const fetchedBrands = await getBrands();
 
+        // Handle current brand selection logic
         let brandToUse = null;
 
-        if (storedBrand) {
-          const parsedBrand = JSON.parse(storedBrand);
-          brandToUse = parsedBrand;
-        } else if (fetchedBrands.length > 0) {
-          brandToUse = fetchedBrands[0];
+        // Check if stored current brand still exists
+        if (currentBrand) {
+          const stillExists = fetchedBrands.some(
+            (brand: { brand_id: string }) => brand.brand_id === currentBrand.brand_id
+          );
+
+          if (stillExists) {
+            brandToUse = currentBrand;
+          } else {
+            console.warn('Current brand no longer exists, selecting new brand');
+          }
         }
 
-        if (brandToUse) {
-          setCurrentBrand(brandToUse);
+        // If no valid current brand, select the first available one
+        if (!brandToUse && fetchedBrands.length > 0) {
+          brandToUse = fetchedBrands[0];
+          console.log(`Auto-selected brand: ${brandToUse.name}`);
         }
+
+        setCurrentBrand(brandToUse);
 
       } catch (error: any) {
         console.error("Initialization error:", error);
@@ -428,12 +584,12 @@ const SocialConnections: React.FC = () => {
     };
 
     init();
-  }, []);
+  }, []); // Remove currentBrand from dependencies to prevent infinite loops
 
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="flex flex-col items-center space-y-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
     </div>
   );
@@ -461,7 +617,6 @@ const SocialConnections: React.FC = () => {
       </div>
     );
   }
-
 
   return (
     <div className="w-full max-w-none space-y-6 md:space-y-8">
@@ -552,11 +707,12 @@ const SocialConnections: React.FC = () => {
                       className={`p-4 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${currentBrand?.brand_id === brand.brand_id
                         ? 'border-blue-500 bg-blue-50'
                         : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                        } ${deletingBrands.has(brand.brand_id) ? 'opacity-50 cursor-not-allowed' : ''}`}
                       onClick={() => {
-                        setCurrentBrand(brand);
-                        localStorage.setItem('currentBrand', JSON.stringify(brand));
-                        closeBrandsDialog();
+                        if (!deletingBrands.has(brand.brand_id)) {
+                          setCurrentBrand(brand);
+                          closeBrandsDialog();
+                        }
                       }}
                     >
                       <div className="flex items-center justify-between">
@@ -569,9 +725,25 @@ const SocialConnections: React.FC = () => {
                             <p className="text-sm text-gray-500">Brand ID: {brand.brand_id}</p>
                           </div>
                         </div>
-                        {currentBrand?.brand_id === brand.brand_id && (
-                          <CheckCircle className="w-5 h-5 text-blue-600" />
-                        )}
+
+                        <button
+                          onClick={async (e) => {
+                            e.stopPropagation();
+                            await handleDeleteBrand(brand);
+                          }}
+                          disabled={deletingBrands.has(brand.brand_id)}
+                          className={`p-2 rounded-lg transition-colors ${deletingBrands.has(brand.brand_id)
+                              ? 'text-gray-400 cursor-not-allowed'
+                              : 'text-red-600 hover:bg-red-50 hover:text-red-700'
+                            }`}
+                          title={deletingBrands.has(brand.brand_id) ? 'Deleting...' : 'Delete brand'}
+                        >
+                          {deletingBrands.has(brand.brand_id) ? (
+                            <div className="w-5 h-5 animate-spin rounded-full border-2 border-gray-300 border-t-red-600"></div>
+                          ) : (
+                            <Trash2 className='w-5 h-5' />
+                          )}
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -714,8 +886,8 @@ const SocialConnections: React.FC = () => {
 
         <div className="bg-white rounded-lg md:rounded-xl p-3 md:p-6 shadow-sm border border-gray-200">
           <div className="flex items-center space-x-2 md:space-x-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-purple-600" />
             </div>
             <div className="min-w-0">
               <p className="text-lg md:text-2xl font-bold text-gray-900">4.2%</p>

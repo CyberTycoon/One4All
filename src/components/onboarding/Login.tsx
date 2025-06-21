@@ -138,11 +138,11 @@ export default function Login() {
 
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 to-blue-50 py-12 px-4">
+        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-12 px-4">
             <div className="max-w-2xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-500 rounded-full mb-4">
                         <Lock className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-4xl font-bold text-gray-800 mb-2">Login</h1>
@@ -185,7 +185,7 @@ export default function Login() {
                         {/* Personal Information Section */}
                         <div className="space-y-4">
                             <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                                <User className="w-5 h-5 text-orange-500" />
+                                <User className="w-5 h-5 text-purple-500" />
                                 User Information
                             </h2>
 
@@ -199,7 +199,7 @@ export default function Login() {
                                         value={formData.username}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                                        className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white/50"
                                         placeholder="owner@business.com/owner123"
                                     />
                                 </div>
@@ -217,7 +217,7 @@ export default function Login() {
                                             onChange={handleInputChange}
                                             required
                                             minLength={8}
-                                            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 bg-white/50"
+                                            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-white/50"
                                             placeholder="••••••••"
                                         />
                                         <button
@@ -235,7 +235,7 @@ export default function Login() {
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full bg-orange-500 text-white font-semibold py-4 px-6 rounded-xl hover:from-orange-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                                        className="w-full bg-purple-500 text-white font-semibold py-4 px-6 rounded-xl hover:from-purple-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                                     >
                                         {isLoading ? 'Logging In...' : 'Log In'}
                                     </button>
@@ -245,7 +245,7 @@ export default function Login() {
                                 <div className="text-center pt-4">
                                     <p className="text-sm text-gray-600">
                                         Don't have an account?{' '}
-                                        <a href="/onboarding" className="text-orange-500 hover:text-orange-600 font-medium">
+                                        <a href="/onboarding" className="text-purple-500 hover:text-purple-600 font-medium">
                                             Sign up here
                                         </a>
                                     </p>

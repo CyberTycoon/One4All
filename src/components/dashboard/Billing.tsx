@@ -1,8 +1,8 @@
 import React from 'react';
-import { 
-  CreditCard, 
-  Download, 
-  Calendar, 
+import {
+  CreditCard,
+  Download,
+  Calendar,
   TrendingUp,
   CheckCircle,
   Clock,
@@ -36,7 +36,7 @@ const Billing: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Billing & Payments</h1>
           <p className="text-gray-600 mt-2">Manage your subscription and view payment history</p>
         </div>
-        <button className="flex items-center space-x-2 bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors">
+        <button className="flex items-center space-x-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
           <Download className="w-5 h-5" />
           <span>Download Invoice</span>
         </button>
@@ -64,15 +64,13 @@ const Billing: React.FC = () => {
           {currentBill.items.map((item, index) => (
             <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
               <div className="flex items-center space-x-3">
-                <div className={`w-2 h-2 rounded-full ${
-                  item.type === 'subscription' ? 'bg-orange-400' : 'bg-blue-400'
-                }`} />
+                <div className={`w-2 h-2 rounded-full ${item.type === 'subscription' ? 'bg-purple-400' : 'bg-blue-400'
+                  }`} />
                 <span className="text-gray-900">{item.service}</span>
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  item.type === 'subscription' 
-                    ? 'bg-orange-100 text-orange-800' 
+                <span className={`text-xs px-2 py-1 rounded-full ${item.type === 'subscription'
+                    ? 'bg-purple-100 text-purple-800'
                     : 'bg-blue-100 text-blue-800'
-                }`}>
+                  }`}>
                   {item.type === 'subscription' ? 'Monthly' : 'Usage'}
                 </span>
               </div>
@@ -96,8 +94,8 @@ const Billing: React.FC = () => {
       <div className="grid md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-orange-600" />
+            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+              <Calendar className="w-5 h-5 text-purple-600" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Presence Marketing</h3>
@@ -164,11 +162,10 @@ const Billing: React.FC = () => {
                     ${bill.amount.toFixed(2)}
                   </td>
                   <td className="py-4 px-4">
-                    <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      bill.status === 'paid' 
-                        ? 'bg-green-100 text-green-800' 
+                    <span className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${bill.status === 'paid'
+                        ? 'bg-green-100 text-green-800'
                         : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                      }`}>
                       {bill.status === 'paid' ? (
                         <CheckCircle className="w-3 h-3" />
                       ) : (
@@ -178,7 +175,7 @@ const Billing: React.FC = () => {
                     </span>
                   </td>
                   <td className="py-4 px-4">
-                    <button className="text-orange-600 hover:text-orange-700 text-sm font-medium">
+                    <button className="text-purple-600 hover:text-purple-700 text-sm font-medium">
                       Download PDF
                     </button>
                   </td>
@@ -202,7 +199,7 @@ const Billing: React.FC = () => {
               <p className="text-gray-600 text-sm">Expires 12/25</p>
             </div>
           </div>
-          <button className="text-orange-600 hover:text-orange-700 font-medium">
+          <button className="text-purple-600 hover:text-purple-700 font-medium">
             Update
           </button>
         </div>

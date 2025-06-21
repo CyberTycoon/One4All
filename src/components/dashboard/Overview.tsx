@@ -36,7 +36,7 @@ const Overview: React.FC = () => {
       change: '0%',
       trend: 'neutral',
       icon: TrendingUp,
-      color: 'text-orange-600'
+      color: 'text-purple-600'
     }
   ];
 
@@ -47,7 +47,7 @@ const Overview: React.FC = () => {
       metric: '24 posts scheduled',
       nextAction: 'Review content calendar',
       icon: Calendar,
-      color: 'bg-orange-100 text-orange-600'
+      color: 'bg-purple-100 text-purple-600'
     },
     {
       name: 'QR Placements',
@@ -96,7 +96,7 @@ const Overview: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-500 border-solid"></div>
       </div>
     );
   }
@@ -105,14 +105,14 @@ const Overview: React.FC = () => {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500">loading</div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-500">loading</div>
       </div>
     }>
       <div className="space-y-8">
         {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-orange-600 to-orange-700 rounded-2xl p-8 text-white">
+        <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Welcome back, {displayName}!</h1>
-          <p className="text-orange-100 text-lg">
+          <p className="text-purple-100 text-lg">
             Here's how your business is performing across all marketing channels.
           </p>
         </div>
@@ -124,7 +124,7 @@ const Overview: React.FC = () => {
             return (
               <div key={stat.name} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <div className="flex items-center justify-between">
-                  <div className={`w-12 h-12 rounded-lg ${stat.color === 'text-green-600' ? 'bg-green-100' : stat.color === 'text-blue-600' ? 'bg-blue-100' : 'bg-orange-100'} flex items-center justify-center`}>
+                  <div className={`w-12 h-12 rounded-lg ${stat.color === 'text-green-600' ? 'bg-green-100' : stat.color === 'text-blue-600' ? 'bg-blue-100' : 'bg-purple-100'} flex items-center justify-center`}>
                     <Icon className={`w-6 h-6 ${stat.color}`} />
                   </div>
                   <div className={`flex items-center space-x-1 text-sm ${stat.trend === 'up' ? 'text-green-600' :
@@ -160,7 +160,7 @@ const Overview: React.FC = () => {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{service.name}</h3>
                 <p className="text-gray-600 text-sm mb-4">{service.metric}</p>
-                <button className="text-orange-600 text-sm font-medium hover:text-orange-700 transition-colors">
+                <button className="text-purple-600 text-sm font-medium hover:text-purple-700 transition-colors">
                   {service.nextAction} →
                 </button>
               </div>

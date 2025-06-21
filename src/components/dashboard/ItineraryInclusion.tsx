@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { 
-  MapPin, 
-  Percent, 
-  Users, 
+import {
+  MapPin,
+  Percent,
+  Users,
   TrendingUp,
   Settings,
   Eye,
   Calendar
 } from 'lucide-react';
-import { useApp } from '../../context/AppContext';
+
 
 const ItineraryInclusion: React.FC = () => {
-  const { itineraryCategories, setItineraryCategories } = useApp();
+  const [itineraryCategories, setItineraryCategories] = useState<Array<any>>([]);
   const [editingCategory, setEditingCategory] = useState<string | null>(null);
 
   const toggleParticipation = (categoryId: string) => {
@@ -66,11 +66,10 @@ const ItineraryInclusion: React.FC = () => {
           return (
             <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
               <div className="flex items-center space-x-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  stat.color === 'text-green-600' ? 'bg-green-100' :
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${stat.color === 'text-green-600' ? 'bg-green-100' :
                   stat.color === 'text-blue-600' ? 'bg-blue-100' :
-                  stat.color === 'text-purple-600' ? 'bg-purple-100' : 'bg-orange-100'
-                }`}>
+                    stat.color === 'text-purple-600' ? 'bg-purple-100' : 'bg-orange-100'
+                  }`}>
                   <Icon className={`w-5 h-5 ${stat.color}`} />
                 </div>
                 <div>
@@ -86,18 +85,16 @@ const ItineraryInclusion: React.FC = () => {
       {/* Itinerary Categories */}
       <div className="space-y-6">
         <h2 className="text-xl font-semibold text-gray-900">Experience Categories</h2>
-        
+
         <div className="grid gap-6">
           {itineraryCategories.map(category => (
             <div key={category.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
-                    category.participating ? 'bg-green-100' : 'bg-gray-100'
-                  }`}>
-                    <MapPin className={`w-6 h-6 ${
-                      category.participating ? 'text-green-600' : 'text-gray-400'
-                    }`} />
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${category.participating ? 'bg-green-100' : 'bg-gray-100'
+                    }`}>
+                    <MapPin className={`w-6 h-6 ${category.participating ? 'text-green-600' : 'text-gray-400'
+                      }`} />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">{category.name}</h3>
@@ -113,14 +110,12 @@ const ItineraryInclusion: React.FC = () => {
                   </button>
                   <button
                     onClick={() => toggleParticipation(category.id)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${
-                      category.participating ? 'bg-green-600' : 'bg-gray-200'
-                    }`}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 ${category.participating ? 'bg-green-600' : 'bg-gray-200'
+                      }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        category.participating ? 'translate-x-6' : 'translate-x-1'
-                      }`}
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${category.participating ? 'translate-x-6' : 'translate-x-1'
+                        }`}
                     />
                   </button>
                 </div>
@@ -135,7 +130,7 @@ const ItineraryInclusion: React.FC = () => {
                     </div>
                     <p className="text-2xl font-bold text-green-900">{category.discount}%</p>
                   </div>
-                  
+
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <div className="flex items-center space-x-2 mb-2">
                       <Users className="w-4 h-4 text-blue-600" />
@@ -145,7 +140,7 @@ const ItineraryInclusion: React.FC = () => {
                       {Math.floor(Math.random() * 10) + 3} bookings
                     </p>
                   </div>
-                  
+
                   <div className="bg-purple-50 p-4 rounded-lg">
                     <div className="flex items-center space-x-2 mb-2">
                       <TrendingUp className="w-4 h-4 text-purple-600" />
@@ -202,7 +197,7 @@ const ItineraryInclusion: React.FC = () => {
           <Eye className="w-6 h-6 text-blue-600" />
           <h3 className="text-lg font-semibold text-gray-900">Guest View Preview</h3>
         </div>
-        
+
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="max-w-md">
             <div className="bg-white rounded-lg shadow-md p-4 border-l-4 border-orange-500">
